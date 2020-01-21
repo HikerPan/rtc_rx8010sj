@@ -23,7 +23,7 @@ rtc_8010是基于RT-Thread实现的rx8010sj软件包，时钟/Alarm的API接口�
 
 ### 1.3 许可证
 
-agile_led package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
+rtc_rx8010 package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 
 ### 1.4 依赖
 
