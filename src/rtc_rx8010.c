@@ -22,8 +22,7 @@
 #include <time.h>
 
 
-#define PKG_USING_RX8010
-#ifdef PKG_USING_RX8010
+#ifdef PKG_USING_RTC_RX8010SJ
 
 
 #define BIT(n) (1<<n)

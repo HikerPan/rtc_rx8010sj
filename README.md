@@ -23,7 +23,7 @@ rtc_8010是基于RT-Thread实现的rx8010sj软件包，时钟/Alarm的API接口�
 
 ### 1.3 许可证
 
-rtc_rx8010 package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
+agile_led package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 
 ### 1.4 依赖
 
@@ -107,7 +107,7 @@ rt_err_t rx8010_set_alarm(rx8010_alarm_time_t *t);
 |rx8010_alarm_time_t *t | Alarm时间|
 
 |  返回      |  注释  |
-| ------|  ----  |
+| - ------ - |  ----  |
 | RT_EOK  | 成功 |
 | !=RT_OK | 异常 |
 
