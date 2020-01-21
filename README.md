@@ -14,11 +14,12 @@ rtc_8010是基于RT-Thread实现的rx8010sj软件包，时钟/Alarm的API接口�
 
 ### 1.2 目录结构
 
-| 名称 | 说明 |
-| ---- | ---- |
-| examples | 例子目录 |
-| docs  | rx8010sj芯片手册 |
-| 根目录  | 源代码 |
+| 名称     | 说明             |
+| -------- | ---------------- |
+| examples | 例子目录         |
+| docs     | rx8010sj芯片手册 |
+| inc      | 头文件           |
+| src      | 源文件           |
 
 ### 1.3 许可证
 
@@ -29,159 +30,96 @@ agile_led package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 - RT-Thread 3.0+
 - RT-Thread 4.0+
 
-## 2、如何打开 agile_led
+## 2、如何打开 rtc_rx8010sj
 
 使用 agile_led package 需要在 RT-Thread 的包管理器中选择它，具体路径如下：
 
 ```
 RT-Thread online packages
-    peripheral libraries and drivers --->
-        [*] agile_led: A agile led package
+    miscellaneous packets --->
+        [*] rx8010sj driver for RT-Thread
 ```
 
 然后让 RT-Thread 的包管理器自动更新，或者使用 `pkgs --update` 命令更新包到 BSP 中。
 
-## 3、使用 agile_led
+## 3、使用 rtc_rx8010sj
 
-在打开 agile_led package 后，当进行 bsp 编译时，它会被加入到 bsp 工程中进行编译。
+在打开 rtc_rx8010 package 后，当进行 bsp 编译时，它会被加入到 bsp 工程中进行编译。
 
 ### 3.1、API说明
 
-1. 创建led对象
+1. 初始化RX8010SJ
 
 ```C
-agile_led_t *agile_led_create(rt_base_t pin, rt_base_t active_logic, const char *light_mode, int32_t loop_cnt);
+rt_err_t rx8010_init(char const *devicename);
 ```
 
-|参数|注释|
-|----|----|
-|pin|控制led的引脚|
-|active_logic|led有效电平(PIN_HIGH/PIN_LOW)|
-|light_mode|闪烁模式字符串|
-|loop_cnt|循环次数(负数为永久循环)|
+| 参数         | 注释                          |
+| ------------ | ----------------------------- |
+| devicename   | 使用的i2c名称                 |
 
-|返回|注释|
-|----|----|
-|!=RT_NULL|agile_led对象指针|
-|RT_NULL|异常|
 
-2. 删除led对象
+| 返回      | 注释              |
+| --------- | ----------------- |
+| RT_EOK    | 初始化成功 		|
+| !=RT_OK | 异常 |
+
+
+2. 设置时间
 
 ```C
-int agile_led_delete(agile_led_t *led);
+rt_err_t  rx8010_set_time(struct tm *dt);
 ```
 
-|参数|注释|
-|----|----|
-|led|led对象指针|
+| 参数 | 注释 |
+| ---- | ---- |
+|struct tm *dt   | 时间|
 
-|返回|注释|
-|----|----|
-|RT_EOK|成功|
+|  返回  |   注释   |
+| ------ |   ----   |
+| RT_EOK |   成功   |
+| !=RT_OK | 异常 |
 
-3. 启动led对象,根据设置的模式执行动作
+3. 读取时间
 
 ```C
-int agile_led_start(agile_led_t *led);
+rt_err_t rx8010_get_time(struct tm *dt);
 ```
 
-|参数|注释|
-|----|----|
-|led|led对象指针|
+| 参数 | 注释 |
+| ---- | ---- |
+| 无  | 无 |
 
-|返回|注释|
-|----|----|
-|RT_EOK|成功|
-|!=RT_OK|异常|
+| 返回    | 注释 |
+| ------- | ---- |
+|struct tm *dt   | 获取到的时间 |
+| RT_EOK  | 成功 |
+| !=RT_OK | 异常 |
 
 4. 停止led对象
 
 ```C
-int agile_led_stop(agile_led_t *led);
+rt_err_t rx8010_set_alarm(rx8010_alarm_time_t *t);
 ```
 
-|参数|注释|
-|----|----|
-|led|led对象指针|
+| 参数 | 注释 |
+| ---- | ---- |
+|rx8010_alarm_time_t *t | Alarm时间|
 
-|返回|注释|
-|----|----|
-|RT_EOK|成功|
+|  返回      |  注释  |
+| - ------ - |  ----  |
+| RT_EOK  | 成功 |
+| !=RT_OK | 异常 |
 
-5. 设置led对象的模式
 
-```C
-int agile_led_set_light_mode(agile_led_t *led, const char *light_mode, int32_t loop_cnt);
-```
-
-|参数|注释|
-|----|----|
-|led|led对象指针|
-|light_mode|闪烁模式字符串|
-|loop_cnt|循环次数(负数为永久循环)|
-
-|返回|注释|
-|----|----|
-|RT_EOK|成功|
-|!=RT_EOK|异常|
-
-6. 设置led对象操作完成的回调函数
-
-```C
-int agile_led_set_compelete_callback(agile_led_t *led, void (*compelete)(agile_led_t *led));
-```
-
-|参数|注释|
-|----|----|
-|led|led对象指针|
-|compelete|操作完成回调函数|
-
-|返回|注释|
-|----|----|
-|RT_EOK|成功|
-
-7. led对象电平翻转
-
-```C
-void agile_led_toggle(agile_led_t *led);
-```
-
-|参数|注释|
-|----|----|
-|led|led对象指针|
-
-8. led对象亮
-
-```C
-void agile_led_on(agile_led_t *led);
-```
-
-|参数|注释|
-|----|----|
-|led|led对象指针|
-
-9. led对象灭
-
-```C
-void agile_led_off(agile_led_t *led);
-```
-
-|参数|注释|
-|----|----|
-|led|led对象指针|
 
 ### 3.2、示例
 
-使用示例在 [examples](./examples) 下。
+使用示例在 [examples](./examples) 下
 
-## 4、注意事项
 
-1. 调用 `agile_led_create` API创建完led对象后，调用其他API确保led对象创建成功，否则被断言。
-2. 调用 `agile_led_create` 和 `agile_led_set_light_mode` API时，参数 `light_mode` 可以为RT_NULL。
-3. `light_mode` 确保时字符串形式，如 `"100,50,10,60"` 或 `"100,50,10,60,"` ,只支持正整数，按照亮灭亮灭...规律。
+## 4、联系方式 & 感谢
 
-## 5、联系方式 & 感谢
-
-* 维护：马龙伟
-* 主页：<https://github.com/loogg/agile_led>
-* 邮箱：<2544047213@qq.com>
+* 维护：Alex.Pan
+* 主页：<https://github.com/HikerPan/rtc_rx8010sj>
+* 邮箱：<94034822@qq.com>
