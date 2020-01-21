@@ -22,7 +22,7 @@
 #include <time.h>
 
 
-#ifdef PKG_USING_RTC_RX8010SJ
+
 
 #ifndef PKG_USING_RX8010_I2C_NAME
 #define PKG_USING_RX8010_I2C_NAME "i2c1"
@@ -147,7 +147,6 @@ rt_err_t rx8010_get_time(struct tm *dt)
 	rt_err_t err=RT_EOK;
 	rt_uint8_t i = 0;
 	rt_uint8_t wday = 0;
-	rt_uint8_t testreg;
 
 
 	err = rx8010_read_reg(RX8010_FLAG,1,&flagreg);
@@ -205,8 +204,6 @@ rt_err_t  rx8010_set_time(struct tm *dt)
 	rt_uint8_t date[7];
 	rt_uint8_t ctrl, flagreg;
 	rt_err_t  ret = RT_EOK;
-	rt_uint8_t testreg;
-
 
 	if ((dt->tm_year < 100) || (dt->tm_year > 199))
 		return -RT_ERROR;
@@ -284,9 +281,9 @@ rt_err_t  rx8010_set_time(struct tm *dt)
  * @param {type} 
  * @return: 
  */
-rt_err_t rx8010_init(void)
+int rx8010_init(void)
 {
-	rt_err_t err = RT_EOK;
+	int err = RT_EOK;
 	rt_uint8_t flagreg,extreg;
 	rt_uint8_t need_clear = 0;
 
@@ -370,7 +367,6 @@ rt_err_t rx8010_init(void)
 INIT_DEVICE_EXPORT(rx8010_init);
 
 
-
 /**
  * @description: Read rx8010 alarm setting
  * @param {type} 
@@ -379,7 +375,6 @@ INIT_DEVICE_EXPORT(rx8010_init);
 rt_err_t rx8010_read_alarm(rx8010_alarm_time_t *t)
 {
 	rt_uint8_t alarmvals[3];
-	rt_uint8_t flagreg;
 
 	/*read alarm register from ALMIN ALHOUR ALDAY*/
 	if(RT_EOK != rx8010_read_reg(RX8010_ALMIN, 3, alarmvals))
@@ -510,7 +505,6 @@ rt_err_t rx8010_alarm_irq_enable(rt_flag_t enabled)
 {
 	rt_uint8_t flagreg;
 	rt_uint8_t ctrl;
-	rt_err_t err;
 
 	if (enabled) {
 		ctrl |= (RX8010_CTRL_AIE | RX8010_CTRL_UIE);
@@ -536,5 +530,5 @@ rt_err_t rx8010_alarm_irq_enable(rt_flag_t enabled)
 
 	return RT_EOK;
 }
-#endif
+
 

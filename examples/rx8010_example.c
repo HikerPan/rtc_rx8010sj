@@ -1,7 +1,7 @@
 /*
  * @Author: Alex.Pan
  * @Date: 2020-01-14 13:53:51
- * @LastEditTime : 2020-01-21 14:53:03
+ * @LastEditTime : 2020-01-21 15:17:32
  * @LastEditors  : Alex.Pan
  * @Description: 
  * @FilePath: \rt-thread\bsp\AIot\packages\rx8010-v1.0.0\rx8010_example.c
@@ -17,7 +17,7 @@
 #include <finsh.h>
 #endif
 
-#if PKG_USING_RTC_RX8010SJ_EXAMPLE
+
 // static void rx8010_start(int argc, char**argv)
 // {
 //     char *rx8010name = NULL;
@@ -146,5 +146,4 @@ static void rx8010_alarm_example_set(int argc, char**argv)
 MSH_CMD_EXPORT(rx8010_set, set rx8010 device time);
 MSH_CMD_EXPORT(rx8010_get, get rx8010 device time);
 MSH_CMD_EXPORT(rx8010_alarm_example_set, set rx8010 alarm time);
-#endif
 #endif
