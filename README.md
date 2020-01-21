@@ -107,7 +107,7 @@ rt_err_t rx8010_set_alarm(rx8010_alarm_time_t *t);
 |rx8010_alarm_time_t *t | Alarm时间|
 
 |  返回      |  注释  |
-| - ------ - |  ----  |
+| ------|  ----  |
 | RT_EOK  | 成功 |
 | !=RT_OK | 异常 |
 
