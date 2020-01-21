@@ -1,7 +1,7 @@
 /*
  * @Author: Alex.Pan
  * @Date: 2020-01-14 13:53:51
- * @LastEditTime : 2020-01-21 14:23:21
+ * @LastEditTime : 2020-01-21 14:53:03
  * @LastEditors  : Alex.Pan
  * @Description: 
  * @FilePath: \rt-thread\bsp\AIot\packages\rx8010-v1.0.0\rx8010_example.c
@@ -11,7 +11,6 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 #include <time.h>
-
 #include <rtc_rx8010.h>
 #include <stdlib.h>
 #ifdef RT_USING_FINSH
@@ -19,25 +18,25 @@
 #endif
 
 #if PKG_USING_RTC_RX8010SJ_EXAMPLE
-static void rx8010_start(int argc, char**argv)
-{
-    char *rx8010name = NULL;
-    if(2 == argc)
-    {
-        rx8010name = rt_malloc(strlen(argv[1])+1);
-        if(NULL != rx8010name)
-        {
-            rt_memset(rx8010name,0,strlen(argv[1])+1);
-            strcpy(rx8010name,argv[1]);
-            if(RT_EOK!=rx8010_init(rx8010name))
-            {
-                rt_kprintf("rx8010 device %s init failed\r\n",rx8010name);
-            }
-            rt_free(rx8010name);
-            rx8010name = NULL;
-        }
-    }  
-}
+// static void rx8010_start(int argc, char**argv)
+// {
+//     char *rx8010name = NULL;
+//     if(2 == argc)
+//     {
+//         rx8010name = rt_malloc(strlen(argv[1])+1);
+//         if(NULL != rx8010name)
+//         {
+//             rt_memset(rx8010name,0,strlen(argv[1])+1);
+//             strcpy(rx8010name,argv[1]);
+//             if(RT_EOK!=rx8010_init(rx8010name))
+//             {
+//                 rt_kprintf("rx8010 device %s init failed\r\n",rx8010name);
+//             }
+//             rt_free(rx8010name);
+//             rx8010name = NULL;
+//         }
+//     }  
+// }
 
 static void rx8010_set(int argc, char**argv)
 {
@@ -143,7 +142,7 @@ static void rx8010_alarm_example_set(int argc, char**argv)
       
 }
 #ifdef RT_USING_FINSH
-MSH_CMD_EXPORT(rx8010_start, start rx8010 device);
+// MSH_CMD_EXPORT(rx8010_start, start rx8010 device);
 MSH_CMD_EXPORT(rx8010_set, set rx8010 device time);
 MSH_CMD_EXPORT(rx8010_get, get rx8010 device time);
 MSH_CMD_EXPORT(rx8010_alarm_example_set, set rx8010 alarm time);

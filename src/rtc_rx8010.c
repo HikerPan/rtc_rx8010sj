@@ -24,6 +24,9 @@
 
 #ifdef PKG_USING_RTC_RX8010SJ
 
+#ifndef PKG_USING_RX8010_I2C_NAME
+#define PKG_USING_RX8010_I2C_NAME "i2c1"
+#endif
 
 #define BIT(n) (1<<n)
 #define BCD_TO_BIN(val)   ((((val) >> 4) * 10) +  ((val)&0x0f))
@@ -281,23 +284,21 @@ rt_err_t  rx8010_set_time(struct tm *dt)
  * @param {type} 
  * @return: 
  */
-rt_err_t rx8010_init(char const *devicename)
+rt_err_t rx8010_init(void)
 {
 	rt_err_t err = RT_EOK;
 	rt_uint8_t flagreg,extreg;
 	rt_uint8_t need_clear = 0;
 
-	RT_ASSERT(devicename);
-
 	/* get the rx8010 handle*/
-	rx8010_i2c_bus = (struct rt_i2c_bus_device *) rt_i2c_bus_device_find(devicename);
+	rx8010_i2c_bus = (struct rt_i2c_bus_device *) rt_i2c_bus_device_find(PKG_USING_RX8010_I2C_NAME);
 	RT_ASSERT(rx8010_i2c_bus);
 	if(RT_NULL == rx8010_i2c_bus)
 	{
-		LOG_E("RX8010 Init devicename %s not found!",devicename);
+		LOG_E("RX8010 Init devicename %s not found!",PKG_USING_RX8010_I2C_NAME);
 		return -RT_ERROR;
 	}
-	LOG_D("RX8010 Device usd %s attached",devicename);
+	LOG_D("RX8010 Device usd %s attached",PKG_USING_RX8010_I2C_NAME);
 
 	/* Initialize reserved registers as specified in datasheet */
 	err = rx8010_write_reg(RX8010_RESV17, 0xD8);
@@ -366,6 +367,8 @@ rt_err_t rx8010_init(char const *devicename)
 
 	return err;
 }
+INIT_DEVICE_EXPORT(rx8010_init);
+
 
 
 /**
